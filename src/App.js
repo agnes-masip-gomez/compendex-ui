@@ -17,23 +17,26 @@ import { Profile } from './pages/Profile';
 import { TrainingHistory } from './pages/trainingSessions';
 import { MainPage } from './pages/mainPage';
 import { TrainingConfig } from './pages/startSession';
+import { NavbarTraining } from './components/NavBar/NavBarTraining';
 
 // wrap everyting up in auth provider
 
-window.API_BASE_URL = "http://127.0.0.1:8000";
-window.API2_BASE_URL = "http://127.0.0.1:8001";
+window.API_BASE_URL = "http://10.68.12.79:8080";
+window.API2_BASE_URL = "http://10.68.12.79:8888";
 
 function App() {
   const [user, setUser] = useState(null);
   const isLoginPage = window.location.pathname === '/';
+  const isTrainingPage = window.location.pathname.startsWith('/training/')
   
   // get current me
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
         <BrowserRouter>
-        {!isLoginPage && <Navbar />}
+        {!isTrainingPage && !isLoginPage && <Navbar />}
         {isLoginPage && <NavbarLogin />}
+        {isTrainingPage && <NavbarTraining/>}
           <Routes>
             <Route path="/" element={<Login/>} />
             <Route path="/dashboard/:uid" element={<Dashboard/>}/>

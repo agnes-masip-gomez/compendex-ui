@@ -11,7 +11,7 @@ COPY . .
 RUN npm run build
 
 # ENV NODE_ENV=production
-ENV PORT=3000
+ENV PORT=8889
 
 EXPOSE ${PORT}
 

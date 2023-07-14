@@ -54,6 +54,24 @@
   color: #b46012;
 }
 
+.navbar-train {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4vh;
+  height: 2vh;
+
+  font-family: "Newsreader";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 32px;
+  line-height: 100%;
+
+  letter-spacing: -0.01em;
+
+  color: #b46012;
+}
+
 .right-navbar {
   margin-right: 9vh;
   left: calc(50% - 67px / 2 + 0.5px);
