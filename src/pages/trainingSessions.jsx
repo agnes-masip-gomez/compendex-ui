@@ -9,7 +9,7 @@ import {
   TableBody,
   TableCell,
   TableHead,
-  TableRow,
+  TableRow, Alert
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { useNavigate, Link, useLocation, useParams } from "react-router-dom";
@@ -20,6 +20,7 @@ import {
 } from "../services/session";
 import { PromiseRenderer } from "../components/Promise/PromiseRenderer";
 import { UserContext } from "../components/Auth/UserContext";
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 
 export const TrainingHistory = () => {
   const { user, setUser } = useContext(UserContext);
@@ -49,9 +50,14 @@ export const TrainingHistory = () => {
   }, [userId]);
 
   const statusChecker = async (celeryId) => {
-    const status = await checkTaskStatus(celeryId);
+    // if (celeryId == null){
+    //   setTaskStatus("Loading")
+    // }else{
+      const status = await checkTaskStatus(celeryId);
+      setTaskStatus(status);
+    // }
     // console.log(status)
-    setTaskStatus(status);
+    
   };
 
   const handleReload = async () => {
@@ -132,7 +138,7 @@ export const TrainingHistory = () => {
                         <TableCell>{row.users.length}</TableCell>
                         <TableCell>
                           {statusChecker(row.celery_async_task) &&
-                          row.celery_async_task ? (
+                          row.celery_async_task && row.current_number_of_records !== 0 ? (
                             <button
                               onClick={() => handleClick(row._id)}
                               className="table-button"
@@ -142,7 +148,15 @@ export const TrainingHistory = () => {
                                 ? "Start Training"
                                 : "Loading..."}
                             </button>
-                          ) : null}
+                          ) : row.current_number_of_records === 0 ? (
+                            <button className="table-button" disabled={true}>
+                              Finished
+                            </button>
+                          ) : (
+                            <button className="table-button" disabled={taskStatus === "Loading"}>
+                              Loading
+                            </button>
+                          )}
                         </TableCell>
                       </TableRow>
                     );
@@ -150,7 +164,16 @@ export const TrainingHistory = () => {
                 </TableBody>
               </Table>
             </Paper>
+            <Button startIcon={<KeyboardBackspaceIcon/>} sx={{gridRow: '1', gridColumn: '9/10'}}>
+              <Link to={`/dashboard/${userId}`} className="Link" style={{ textDecoration: 'none'}}>
+                  Back
+              </Link>
+          </Button>
+          <Alert severity="info">When the button is "Loading", there are background processes being done in the background that can take some minutes.
+          Click the button reload after a while until the button shows "Start Training". </Alert>
           </Grid>
+          
+          
         </Box>
       </Box>
     </div>

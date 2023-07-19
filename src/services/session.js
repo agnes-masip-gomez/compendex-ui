@@ -101,7 +101,7 @@ export const getTrainingSessionInfo = async (sessionId) => {
   }
 };
 
-export const updatePositives = async (sessionId, userId, title, abstract) => {
+export const updatePositives = async (sessionId, userId, title, abstract, label) => {
   try {
     
 
@@ -115,6 +115,7 @@ export const updatePositives = async (sessionId, userId, title, abstract) => {
         body: JSON.stringify({
           title: title,
           abstract: abstract,
+          label: label
         }),
       }
     );

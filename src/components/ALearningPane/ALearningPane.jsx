@@ -60,13 +60,15 @@ export const ALearningPane = ({
       const timeEnds = new Date(datetime).getTime();
       const TimeSpentMS = Math.abs(timeEnds - timeStarts);
       const finalTimeSpent = Math.floor(TimeSpentMS / (1000 * 60));
-
+      
       await userRespond(currentUserResponse._id, response, finalTimeSpent);
       if (response === "true")
-        await updatePositives(sessionId, userId, abstract.title, abstract.abstract);
+        await updatePositives(sessionId, userId, abstract.title, abstract.abstract, abstract.label);
       else if (response === "false") await updateNegatives(sessionId, userId);
     } else {
       await updateUnknowns(sessionId, userId);
+      // CONCEPTUAL BUG addAbstractBackToList(sessionId, abstract._id);
+      // this would just return the same one again, something similar that gives it to another user or something await 
     }
     await updateRecordsLeft(sessionId);
     onUpdateHistory();
@@ -80,10 +82,17 @@ export const ALearningPane = ({
     const batchCheck = await checkBatch(sessionId);
     if (batchCheck < 32) {
       const data = await getNextAbstractRanked(sessionId);
-      setAbstract(data);
-      createUserResponse(sessionId, data._id, userId, projectId, datetime).then(
+      console.log(data)
+      // 500 interal server error, it works but maybe change api so the error does not fire
+      if(data === "empty"){
+        navigate(`/trainingDashboard/${projectId}`, { replace: true });
+      }else{
+        setAbstract(data);
+        createUserResponse(sessionId, data._id, userId, projectId, datetime, abstract.label).then(
         (data) => setUserResponse(data)
       );
+      }
+      
     } else {
       newBatchProcess(sessionId);
     }

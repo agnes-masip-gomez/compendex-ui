@@ -25,7 +25,7 @@ export const Navbar = () => {
           className={`navbar-links`}
           style={{ textDecoration: "none", marginRight: "3vh" }}
         >
-          User Management
+          Create User
         </Link>
         <Link
           to={`/profile/${user._id}`}

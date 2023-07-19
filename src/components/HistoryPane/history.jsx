@@ -15,6 +15,8 @@ import { UserContext } from "../Auth/UserContext";
 
 export const History = ({sessionId, key}) => {
 
+  const navigate = useNavigate();
+
   const { user } = useContext(UserContext);
 
   const modelProgress = 50;
@@ -34,6 +36,13 @@ export const History = ({sessionId, key}) => {
   function setData(data) {
     setDomain(data.domain);
     setNRecords(data.starting_number_of_records);
+    if(data.current_number_of_records <= 0){
+      // addAbstractBackToList(sessionId, abstract._id); 
+      // navigate(`/trainingDashboard/${projectId}`, { replace: true });
+      // a warning to the user would be better than this rude redirect
+      console.log(data.projectId)
+      navigate(`/trainingDashboard/${data.projectId}`, { replace: true })
+    }
 
     const pos = data.number_positive_responses.find(
       (response) => response.userId === userId
@@ -53,7 +62,7 @@ export const History = ({sessionId, key}) => {
     );
    
     const unkValue = unknowns ? unknowns.resp : 0;
-    console.log(unkValue)
+    // console.log(unkValue)
     setUnknowns(unkValue);
     setRecordsLeft(data.current_number_of_records);
   }
@@ -64,7 +73,7 @@ export const History = ({sessionId, key}) => {
       <p className="historyP"> Domain: {domain}</p>
       <p className="historyP"> Total Records: {nrecords} </p>
       <h3 className="historyTitle">Model Training</h3>
-      <p className="historyP"> Total Accuracy: </p>
+      <p className="historyP"> Total Accuracy: tbd</p>
       {/* <LinearProgress
         variant="buffer"
         value={modelProgress}
@@ -86,7 +95,7 @@ export const History = ({sessionId, key}) => {
       <p className="historyP"> No: {negs} </p>
       <p className="historyP"> Not sure: {unk} </p>
       <p className="historyP"> Records Left: {rleft} </p>
-      <h3 className="historyTitle">History</h3>
+      {/* <h3 className="historyTitle">History</h3> */}
     </div>
   );
 };

@@ -1,6 +1,6 @@
-import logo from './logo.svg';
+
 import './App.css';
-import { BrowserRouter, Routes, Route, Navigate} from 'react-router-dom'
+import { BrowserRouter, Routes, Route} from 'react-router-dom'
 import {Login} from './components/Auth/Login';
 import {CreateUser} from './components/Auth/CreateUser';
 import {Dashboard} from './components/Dashboard';
@@ -29,7 +29,7 @@ function App() {
   const isLoginPage = window.location.pathname === '/';
   const isTrainingPage = window.location.pathname.startsWith('/training/')
   
-  // get current me
+
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
@@ -37,7 +37,7 @@ function App() {
         {!isTrainingPage && !isLoginPage && <Navbar />}
         {isLoginPage && <NavbarLogin />}
         {isTrainingPage && <NavbarTraining/>}
-          <Routes>
+          <Routes key={window.location.pathname}>
             <Route path="/" element={<Login/>} />
             <Route path="/dashboard/:uid" element={<Dashboard/>}/>
             <Route path="/profile/:uid" element={<Profile/>}/>

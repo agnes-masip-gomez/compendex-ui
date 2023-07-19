@@ -44,7 +44,7 @@ export const getRandomAbstract = async (sessionId) => {
     }
   };
 
-  export const createUserResponse = async (sessionId, id, userId, pid, datetime) => {
+  export const createUserResponse = async (sessionId, id, userId, pid, datetime, label) => {
     try {
       const updateResponse = await fetch(`${window.API2_BASE_URL}/training/${sessionId}/abstracts/${id}/response`, {
         method: 'PUT',
@@ -57,7 +57,7 @@ export const getRandomAbstract = async (sessionId) => {
                 "user": userId,
                 "projectId": pid,
                 "trainingSessionId": sessionId,
-                "prediction": userId,
+                "prediction": label,
                 "time_starts": datetime
             })
         });

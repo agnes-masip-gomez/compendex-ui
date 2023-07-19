@@ -19,19 +19,24 @@ export const fetchUsersOfAProject = async (id) => {
 export const updateParticipants = async (id, formData) => {
   try {
     // Fetch the current project object
+    console.log("update participant function")
     const response = await fetch(`${window.API_BASE_URL}/projects/${id}`);
     const project = await response.json();
-    //console.log(formData);
     // Add the new participant to the participants array
-    project.participants.push(formData.participant);
+    if(project.participants.includes(formData.participant)){
+        return "participant already in list"
+    }else{
+      project.participants.push(formData.participant);
 
     // Update training sessions participants
     const tsessionResponse = await fetch(
       `${window.API2_BASE_URL}/training/project/${id}`
     );
     const tsession = await tsessionResponse.json();
+    console.log(tsession)
     // TODO: refactor this for more than one training session
-    if (tsession == []) {
+    if (tsession !== 0) {
+      console.log("fuck")
       const updateTsessionResponse = await fetch(
         `${window.API2_BASE_URL}/training/${tsession[0]._id}/users/${formData.participant}`,
         {
@@ -42,6 +47,8 @@ export const updateParticipants = async (id, formData) => {
         }
       );
       const tdata = await updateTsessionResponse.json();
+      console.log("yees")
+      // console.log(tdata)
     }
 
     // Update the project object with the modified participants array
@@ -59,6 +66,9 @@ export const updateParticipants = async (id, formData) => {
     );
     const data = await updateResponse.json();
     console.log(data);
+    return "added user"
+    }
+    
   } catch (error) {
     console.error("There was a problem with the fetch operation:", error);
   }

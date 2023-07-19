@@ -8,14 +8,14 @@
 
 run the docker daemon (open dockerhub)
 
-docker build -t dashboard-ui .
+sudo docker build -t compendex-ui .
 
 (the container needs to be killed before)
-docker run -p 3000:3000 --name dashboard-service dashboard-ui
+sudo docker run -p 8889:8889 --name compendex-service compendex-ui
 
 (after its existence)
 
-docker run -p 8001:8001 dashboard-service
+docker run -p 8889:8889 dashboard-service
 
 
 ## Available Scripts

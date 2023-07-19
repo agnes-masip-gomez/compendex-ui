@@ -38,6 +38,7 @@ export const Login = () => {
       console.log(data)
       if(data.detail == 'Wrong login details!'){
         console.log("Incorrect login")
+        setLoginFailed(true)
       }else{
         
         await setUser(data);
@@ -89,7 +90,7 @@ export const Login = () => {
           {loginFailed && (
             <div>
               <Box mt={2}> </Box>
-              <Alert severity="error">{loginFailed}</Alert>
+              <Alert severity="error">Incorrect login details. Try again.</Alert>
             </div>
           )}
         </Box>
