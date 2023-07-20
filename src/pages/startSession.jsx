@@ -1,4 +1,4 @@
-import { Container, Select, Box, Button, Typography, TextField, InputLabel, MenuItem, FormControl} from '@mui/material';
+import { Container, Select, Box, Button, Typography, TextField, InputLabel, MenuItem, FormControl, Alert} from '@mui/material';
 import { useNavigate, Link, useLocation, useParams} from "react-router-dom";
 import { useContext } from "react"
 import { useState, useEffect } from 'react';
@@ -34,7 +34,7 @@ export const TrainingConfig = () => {
     const onSubmit = () => {
         // startTrainingSession(formData).then(data=> navigate("/training", { state: { sessionId: data, label: formData.label, uid: userId}, replace: true }))
         const datetime = new Date().toLocaleString('en-US', { timeZone: 'Europe/Paris' });
-        getUsersByProject(projectId).then(userList => startTrainingSession(nrecords, userList, projectId, datetime).then(data=> navigate(`/trainingDashboard/${projectId}`, { state: { sessionId: data, uid: userId, pid: projectId}, replace: true }))
+        getUsersByProject(projectId).then(userList => startTrainingSession(5000, userList, projectId, datetime).then(data=> navigate(`/trainingDashboard/${projectId}`, { state: { sessionId: data, uid: userId, pid: projectId}, replace: true }))
         )
         
 
@@ -47,14 +47,14 @@ export const TrainingConfig = () => {
       <hr className="divider"></hr>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Box className="input-form">
-          <input
+          {/* <input
             className="input-field"
             required
             placeholder="Number of records"
             id="nrecords"
             value={nrecords}
             onChange={(e) => setNRecords(e.target.value)} 
-            />
+            /> */}
 
         <div><Box mt={3}></Box></div>
         <button className="form-button" type="submit">
@@ -63,6 +63,8 @@ export const TrainingConfig = () => {
           
         </Box>
         </form>
+        <div><Box mt={3}></Box></div>
+        <Alert severity="info">Currently, it is only available a data set of 5000 records </Alert>
         </div>
   
     

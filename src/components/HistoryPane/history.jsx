@@ -72,8 +72,8 @@ export const History = ({sessionId, key}) => {
       <h3 className="historyTitle">Training Info</h3>
       <p className="historyP"> Domain: {domain}</p>
       <p className="historyP"> Total Records: {nrecords} </p>
-      <h3 className="historyTitle">Model Training</h3>
-      <p className="historyP"> Total Accuracy: tbd</p>
+      {/* <h3 className="historyTitle">Model Training</h3>
+      <p className="historyP"> Total Accuracy: tbd</p> */}
       {/* <LinearProgress
         variant="buffer"
         value={modelProgress}
