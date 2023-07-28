@@ -46,6 +46,7 @@ export const ALearningPane = ({
 
   const handleClick = () => {
     addAbstractBackToList(sessionId, abstract._id);
+    // delete unfinished user response would be nice
     console.log(abstract)
     navigate(`/trainingDashboard/${projectId}`, { replace: true });
   };
@@ -60,7 +61,7 @@ export const ALearningPane = ({
       const timeEnds = new Date(datetime).getTime();
       const TimeSpentMS = Math.abs(timeEnds - timeStarts);
       const finalTimeSpent = Math.floor(TimeSpentMS / (1000 * 60));
-      
+
       await userRespond(currentUserResponse._id, response, finalTimeSpent);
       if (response === "true")
         await updatePositives(sessionId, userId, abstract.title, abstract.abstract, abstract.label);
@@ -75,24 +76,24 @@ export const ALearningPane = ({
   };
 
   const refresh = async () => {
-    
+
     const datetime = new Date().toLocaleString("en-US", {
       timeZone: "Europe/Paris",
     });
     const batchCheck = await checkBatch(sessionId);
     if (batchCheck < 32) {
       const data = await getNextAbstractRanked(sessionId);
-      console.log(data)
+      // console.log(data)
       // 500 interal server error, it works but maybe change api so the error does not fire
-      if(data === "empty"){
+      if (data === "empty") {
         navigate(`/trainingDashboard/${projectId}`, { replace: true });
-      }else{
+      } else {
         setAbstract(data);
-        createUserResponse(sessionId, data._id, userId, projectId, datetime, abstract.label).then(
-        (data) => setUserResponse(data)
-      );
+        createUserResponse(sessionId, data._id, userId, projectId, datetime, data.label).then(
+          (data) => setUserResponse(data)
+        );
       }
-      
+
     } else {
       newBatchProcess(sessionId);
     }
@@ -103,7 +104,12 @@ export const ALearningPane = ({
       <Box flexDirection="column" flex={1}>
         <div className="abstract">
           <h3 className="">Label: {abstract.label}</h3>
+          <h3>Title: {abstract.title}</h3>
           <p className=""> {abstract.abstract} </p>
+          <p>
+            Keywords: {abstract.CCVCMH}
+           
+          </p>
         </div>
 
         <Box display="flex" justifyContent="center">

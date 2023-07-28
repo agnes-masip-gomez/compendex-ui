@@ -76,6 +76,7 @@ export const Login = () => {
             required
             placeholder="Password"
             id="password"
+            type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
