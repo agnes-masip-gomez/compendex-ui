@@ -16,6 +16,27 @@ export const fetchUsersOfAProject = async (id) => {
   }
 };
 
+export const fetchPrecisionProject = async (id) => {
+  try {
+    const response = await fetch(`${window.API2_BASE_URL}/training/${id}/precision`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("There was a problem with the fetch operation:", error);
+  }
+};
+
+
+export const fetchPrecisionsLabelProject = async (id) => {
+  try {
+    const response = await fetch(`${window.API2_BASE_URL}/training/${id}/precision/labels`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("There was a problem with the fetch operation:", error);
+  }
+};
+
 export const updateParticipants = async (id, formData) => {
   try {
     // Fetch the current project object

@@ -3,13 +3,15 @@ import { Box, Container, Button, FormControl, TextField, Typography} from "@mui/
 import { useForm } from "react-hook-form";
 import { useNavigate, Link } from "react-router-dom";
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
-import { useContext } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { UserContext } from '../Auth/UserContext';
 import { createProject } from "../../services/project_service";
 
 //TODO
 // error form control -> easy
 export const CreateProject = () => {
+
+    const [uid, setUid] = useState("");
     const navigate = useNavigate();
     const { user } = useContext(UserContext);
     const {
@@ -19,12 +21,19 @@ export const CreateProject = () => {
     } = useForm();
 
     const onSubmit = (formData) => {
-      formData.participants = [user._id];
-      createProject(formData).then(data => {navigate(`/dashboard/${user._id}`, { replace: true })});
+      formData.participants = [uid];
+      createProject(formData).then(data => {navigate(`/dashboard/${uid}`, { replace: true })});
       
       }
     
-
+      useEffect(() => {
+        const fetchData = async () => {
+          const uid = localStorage.getItem("userId");
+          await setUid(uid);
+      };
+      fetchData()
+    
+      }, []);
     return (
     <Container height="100vh" alignItems="center" justifyContent="center">
       <Box
@@ -36,7 +45,7 @@ export const CreateProject = () => {
       }}
       >
         <Button startIcon={<KeyboardBackspaceIcon/>} sx={{gridRow: '1', gridColumn: '9/10'}}>
-            <Link to={`/dashboard/${user._id}`} className="Link" style={{ textDecoration: 'none'}}>
+            <Link to={`/dashboard/${uid}`} className="Link" style={{ textDecoration: 'none'}}>
                 Back
             </Link>
         </Button>
@@ -67,6 +76,7 @@ export const CreateProject = () => {
             mt={6}
             mb={6}
             type="submit"
+            style={{ backgroundColor: '#b46012' }}
           >
             Create Project
           </Button>

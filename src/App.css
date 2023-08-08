@@ -131,6 +131,12 @@
   align-items: center;
   justify-content: center;
 }
+
+.formButton {
+  
+  background-color: #b46012;
+  
+}
 .table-button {
   background: #b46012;
   border-radius: 4px;
@@ -223,6 +229,23 @@
 
   color: #000000;
 }
+
+
+.small-title {
+  font-family: "Newsreader";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 120%;
+  margin: 0;
+
+  display: flex;
+  align-items: flex-end;
+  letter-spacing: -0.02em;
+
+  color: #000000;
+}
+
 
 .input-field {
   box-sizing: border-box;

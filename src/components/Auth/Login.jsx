@@ -40,8 +40,8 @@ export const Login = () => {
         console.log("Incorrect login")
         setLoginFailed(true)
       }else{
-        
         await setUser(data);
+        localStorage.setItem("userId", data._id);
         setIsFormSubmitted(true);
         navigate(`/dashboard/${data._id}`, { replace: true });
       }

@@ -29,13 +29,24 @@ function preventDefault(event) {
 export const ProjectList = () => {
   const { user } = useContext(UserContext);
   
+  
+  const [uid, setUid] = useState("");
+  
   const [rows, setRows] = useState([]);
   const [userRole, setUserRole] = useState("");
 
   useEffect(() => {
-    // TODO does not properly work when not admin
-    fetchDataByRole(user._id).then((data) => setRows(data));
-  }, []);
+    const fetchUserData = async () => {
+        const uid = localStorage.getItem("userId");
+        await setUid(uid);
+        const data = await fetchDataByRole(uid);
+        setRows(data);
+      
+    };
+
+    fetchUserData();
+  }, [user]);
+
 
   const navigate = useNavigate();
   return (
@@ -80,7 +91,7 @@ export const ProjectList = () => {
                 className="Link"
                 style={{ textDecoration: "none" }}
               >
-                <p className="navbar-signout-text"> Start Training</p>
+                <p className="navbar-signout-text"> Go to Training</p>
               </Link>
             </button>
           </div>

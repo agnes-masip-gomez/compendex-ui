@@ -7,26 +7,39 @@ import Sidebar from "../components/HistoryPane/Sidebar";
 import { UserContext } from "../components/Auth/UserContext";
 
 export const MainPage = () => {
-  const { user } = useContext(UserContext);
+  const {user} = useContext(UserContext);
+  const [uid, setUid] = useState("");
+  const [projectId, setPid] = useState("");
+  const [sessionId, setSession] = useState("");
   const [historyKey, setHistoryKey] = useState(0);
+  
 
-  const navigate = useNavigate();
-  const location = useLocation();
-  const state = location.state;
-  const sessionId = state?.sessionId;
-  //const label = state?.label;
-  const userId = state?.uid;
-  const projectId = state?.pid;
+  useEffect(() => {
+    const fetchData = async () => {
+      const uid = localStorage.getItem("userId");
+      await setUid(uid);
+      const pid = localStorage.getItem("pid");
+      await setPid(pid);
+      const sesh = localStorage.getItem("sessionId");
+      await setSession(sesh);
+      console.log(sessionId)
+      console.log(projectId)
+      console.log(uid)
+    
+  };
+  fetchData()
+
+  }, []);
 
 
   return (
     <div>
       <div className="trainingPage">
         <div className="leftBar">
-          <History key={historyKey} sessionId={sessionId} />
+          {sessionId && <History key={historyKey} sessionId={sessionId}  />}
         </div>
         <div>
-          <ALearningPane sessionId={sessionId} userId={userId} projectId={projectId} onUpdateHistory={() => setHistoryKey(historyKey + 1)}  />
+          {sessionId && <ALearningPane sessionId={sessionId} userId={uid} projectId={projectId} onUpdateHistory={() => setHistoryKey(historyKey + 1)}  />}
         </div>
       </div>
     </div>

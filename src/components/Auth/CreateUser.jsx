@@ -7,7 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import { signup } from "../../services/auth_service";
@@ -16,6 +16,7 @@ import { UserContext } from "./UserContext";
 //TODO
 // error form control -> easy
 export const CreateUser = () => {
+  const [uid, setUid] = useState("");
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
   const {
@@ -26,9 +27,18 @@ export const CreateUser = () => {
 
   const onSubmit = (formData) => {
     signup(formData).then((data) =>
-      navigate(`/dashboard/${user._id}`, { replace: true })
+      navigate(`/dashboard/${uid}`, { replace: true })
     );
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const uid = localStorage.getItem("userId");
+      await setUid(uid);
+  };
+  fetchData()
+
+  }, []);
 
   return (
     <Container height="100vh" alignItems="center" justifyContent="center">
@@ -45,7 +55,7 @@ export const CreateUser = () => {
           sx={{ gridRow: "1", gridColumn: "9/10" }}
         >
           <Link
-            to={`/dashboard/${user._id}`}
+            to={`/dashboard/${uid}`}
             className="Link"
             style={{ textDecoration: "none" }}
           >
@@ -83,7 +93,7 @@ export const CreateUser = () => {
             id="password"
             {...register("password")}
           />
-          <Button fullWidth variant="contained" mt={6} mb={6} type="submit">
+          <Button fullWidth variant="contained" mt={6} mb={6} type="submit" style={{ backgroundColor: '#b46012' }}>
             Sign up
           </Button>
         </form>

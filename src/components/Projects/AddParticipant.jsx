@@ -23,6 +23,8 @@ export const AddParticipant = () => {
   const { id } = useParams();
   const { user } = useContext(UserContext);
 
+  const [uid, setUid] = useState("");
+
   const [interactions, setInteractions] = useState('');
 
   const {
@@ -32,9 +34,14 @@ export const AddParticipant = () => {
   } = useForm();
   // only executes when component is mounted for the first time
   useEffect(() => {
-    fetchUsers().then(data => setUsers(data.filter(item => item._id !== user._id)));
-
-    fetchUsersOfAProject(id).then(data => setUsersProject(data));
+    const fetchParticipants = async () => {
+      const uid = localStorage.getItem("userId");
+      await setUid(uid);
+      fetchUsers().then(data => setUsers(data.filter(item => item._id !== uid)));
+      fetchUsersOfAProject(id).then(data => setUsersProject(data));
+    
+  };
+  fetchParticipants()
 
   }, []);
 
@@ -72,7 +79,7 @@ export const AddParticipant = () => {
         }}
       >
         <Button startIcon={<KeyboardBackspaceIcon />} sx={{ gridRow: '1', gridColumn: '9/10' }}>
-          <Link to={`/dashboard/${user._id}`} className="Link" style={{ textDecoration: 'none' }}>
+          <Link to={`/dashboard/${uid}`} className="Link" style={{ textDecoration: 'none' }}>
             Back
           </Link>
         </Button>
@@ -103,6 +110,7 @@ export const AddParticipant = () => {
             mt={6}
             mb={6}
             type="submit"
+            style={{ backgroundColor: '#b46012' }}
           >
             Assign user to the project
           </Button>

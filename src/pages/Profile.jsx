@@ -1,11 +1,14 @@
 import { Container, Grid, Box, Button, Typography, Paper} from '@mui/material';
 import { useForm } from "react-hook-form";
 import { useNavigate, Link } from 'react-router-dom';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { UserContext } from "../components/Auth/UserContext";
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
+import { fetchUserData } from '../services/user_service';
 
 export const Profile = () => {
+  const [uid, setUid] = useState("");
+    const [profileUser, setProfile] = useState('');
     const { user } = useContext(UserContext);
     const navigate = useNavigate();
     console.log(user)
@@ -13,8 +16,15 @@ export const Profile = () => {
     //TODO: Make API call that returns how many projects a User participates in.
 
     useEffect(() => {
-     
-    });
+      const fetchData = async () => {
+        const uid = localStorage.getItem("userId");
+        await setUid(uid);
+        fetchUserData(uid).then(data => setProfile(data));
+      
+    };
+    fetchData()
+  
+    }, []);
 
     return (
       <div className="container-app">
@@ -22,13 +32,13 @@ export const Profile = () => {
         <p className="title">Profile</p>
         <div class="vl"></div>
         <div>
-            <p className="counter"> Fullname: {user.fullname} </p>
-            <p className="counter"> E-mail: {user.email} </p>
-            <p className="counter"> Admin rights: {user.admin ? 'Yes' : 'No'}</p>
+            <p className="counter"> Fullname: {profileUser.fullname} </p>
+            <p className="counter"> E-mail: {profileUser.email} </p>
+            <p className="counter"> Admin rights: {profileUser.admin ? 'Yes' : 'No'}</p>
         </div>
         </div>
         <Button startIcon={<KeyboardBackspaceIcon/>} sx={{gridRow: '1', gridColumn: '9/10'}}>
-              <Link to={`/dashboard/${user._id}`} className="Link" style={{ textDecoration: 'none'}}>
+              <Link to={`/dashboard/${uid}`} className="Link" style={{ textDecoration: 'none'}}>
                   Back
               </Link>
           </Button>

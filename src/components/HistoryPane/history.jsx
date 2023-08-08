@@ -26,15 +26,21 @@ export const History = ({sessionId, key}) => {
   const [negs, setNegatives] = useState();
   const [unk, setUnknowns] = useState();
   const [rleft, setRecordsLeft] = useState();
-
-  const userId = user._id
+  const [userId, setUid] = useState("");
 
   useEffect(() => {
-    getTrainingSessionInfo(sessionId).then((data) => setData(data));
+    const fetchData = async () => {
+      const userId = localStorage.getItem("userId");
+      await setUid(userId);
+      getTrainingSessionInfo(sessionId).then((data) => setData(data));
+    
+  };
+  fetchData()
   }, [sessionId]);
 
   function setData(data) {
     setDomain(data.domain);
+    console.log(domain)
     setNRecords(data.starting_number_of_records);
     if(data.current_number_of_records <= 0){
       // addAbstractBackToList(sessionId, abstract._id); 
@@ -43,7 +49,6 @@ export const History = ({sessionId, key}) => {
       console.log(data.projectId)
       navigate(`/trainingDashboard/${data.projectId}`, { replace: true })
     }
-
     const pos = data.number_positive_responses.find(
       (response) => response.userId === userId
     );
