@@ -15,14 +15,15 @@ import { useState, useEffect } from 'react';
 import PrivateRoute from './components/Auth/PrivateRoute';
 import { Profile } from './pages/Profile';
 import { TrainingHistory } from './pages/trainingSessions';
+import { AnnotationHistory } from './pages/annotationHistory';
 import { MainPage } from './pages/mainPage';
 import { TrainingConfig } from './pages/startSession';
 import { NavbarTraining } from './components/NavBar/NavBarTraining';
 
 // wrap everyting up in auth provider
 
-window.API_BASE_URL = "http://10.68.12.79:8080";
-window.API2_BASE_URL = "http://10.68.12.79:8888";
+window.API_BASE_URL = "http://10.68.12.87:8080";
+window.API2_BASE_URL = "http://10.68.12.87:8888";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -46,6 +47,7 @@ function App() {
             <Route path="/project" element={<CreateProject/>} />
             <Route path="/project/:id/add" element={<AddParticipant/>} />
             <Route path="/trainingDashboard/:pid" element={<TrainingHistory/>} />
+            <Route path="/trainingHistory/:pid" element={<AnnotationHistory/>} />
             <Route path="/training/:userId" element={<MainPage/>} />
             <Route path="/training/new/:userId/:projectId" element={<TrainingConfig/>} />
           </Routes>

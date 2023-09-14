@@ -1,4 +1,15 @@
 
+export const getAbstract = async (absId) => {
+  try {
+    const response = await fetch(`${window.API2_BASE_URL}/test/abstracts/${absId}`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('There was a problem with the fetch operation:', error);
+  }
+};
+
+
 export const getRandomAbstract = async (sessionId) => {
     try {
       const response = await fetch(`${window.API2_BASE_URL}/training/${sessionId}/abstracts`);
@@ -33,6 +44,16 @@ export const getRandomAbstract = async (sessionId) => {
     }
   };
 
+  
+export const askChatGPT = async (prompt) => {
+  try {
+    const response = await fetch(`${window.API2_BASE_URL}/training/chatGPT/${prompt}`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("There was a problem with the fetch operation:", error);
+  }
+};
   export const getNextAbstractRanked = async (sessionId) => {
     try {
       const response = await fetch(`${window.API2_BASE_URL}/training/${sessionId}/abstracts/ranked`);
@@ -62,6 +83,7 @@ export const getRandomAbstract = async (sessionId) => {
             })
         });
         const responseData = await updateResponse.json();
+      //console.log(responseData)
       return responseData;
     } catch (error) {
       console.error('There was a problem with the fetch operation:', error);
@@ -83,6 +105,7 @@ export const getRandomAbstract = async (sessionId) => {
             })
         });
         const data = await updateResponse.json();
+        console.log(data)
         
     } catch (error) {
         console.error('There was a problem with the fetch operation:', error);

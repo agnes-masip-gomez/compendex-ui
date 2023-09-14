@@ -29,8 +29,7 @@ import { useNavigate } from "react-router-dom";
 export const ALearningPane = ({
   sessionId,
   userId,
-  projectId,
-  onUpdateHistory,
+  projectId
 }) => {
   const [abstract, setAbstract] = useState([]);
   const [label, setLabel] = useState("");
@@ -107,7 +106,7 @@ export const ALearningPane = ({
       <Box flexDirection="column" flex={1}>
         <div className="abstract">
           <h3 className="">Label: {abstract.label}</h3>
-          <h3>Title: {abstract.title}</h3>
+          <h5>Title: {abstract.title}</h5>
           <p className=""> {abstract.abstract} </p>
           <p>
             Keywords: {abstract.CCVCMH}

@@ -59,7 +59,7 @@ export const getUsersByProject = async (id) => {
       `${window.API2_BASE_URL}/training/project/${id}/users`
     );
     const data = await response.json();
-    console.log(data);
+    
     return data;
   } catch (error) {
     console.error("There was a problem with the fetch operation:", error);
@@ -131,6 +131,84 @@ export const updateNegatives = async (sessionId, userId) => {
     // Update the project object with the modified participants array
     const updateResponse = await fetch(
       `${window.API2_BASE_URL}/training/${sessionId}/numberNegatives/${userId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await updateResponse.json();
+    return data;
+  } catch (error) {
+    console.error("There was a problem with the fetch operation:", error);
+  }
+};
+
+export const decreaseNegatives = async (sessionId, userId) => {
+  try {
+    // Update the project object with the modified participants array
+    const updateResponse = await fetch(
+      `${window.API2_BASE_URL}/training/${sessionId}/decreaseNegatives/${userId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await updateResponse.json();
+    return data;
+  } catch (error) {
+    console.error("There was a problem with the fetch operation:", error);
+  }
+};
+
+
+export const decreasePositives = async (sessionId, userId) => {
+  try {
+    // Update the project object with the modified participants array
+    const updateResponse = await fetch(
+      `${window.API2_BASE_URL}/training/${sessionId}/decreasePositives/${userId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await updateResponse.json();
+    return data;
+  } catch (error) {
+    console.error("There was a problem with the fetch operation:", error);
+  }
+};
+
+
+export const getRespInfoAnnotations = async (respId) => {
+  try {
+    
+    const updateResponse = await fetch(
+      `${window.API2_BASE_URL}/training/responses/${respId}/get`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await updateResponse.json();
+    return data;
+  } catch (error) {
+    console.error("There was a problem with the fetch operation:", error);
+  }
+};
+
+export const decreaseAbstractBatch = async (sessionId, title, label) => {
+  try {
+    // Update the project object with the modified participants array
+    const updateResponse = await fetch(
+      `${window.API2_BASE_URL}/training/${sessionId}/deleteAbstractBatch/${title}/${label}`,
       {
         method: "PUT",
         headers: {

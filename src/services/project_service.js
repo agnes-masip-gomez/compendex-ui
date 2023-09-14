@@ -16,6 +16,8 @@ export const fetchUsersOfAProject = async (id) => {
   }
 };
 
+
+
 export const fetchPrecisionProject = async (id) => {
   try {
     const response = await fetch(`${window.API2_BASE_URL}/training/${id}/precision`);
@@ -49,32 +51,22 @@ export const updateParticipants = async (id, formData) => {
     }else{
       project.participants.push(formData.participant);
 
-    // Update training sessions participants
-    const tsessionResponse = await fetch(
-      `${window.API2_BASE_URL}/training/project/${id}`
-    );
-    const tsession = await tsessionResponse.json();
-    console.log(tsession)
-    // TODO: refactor this for more than one training session
-    if (tsession !== 0) {
-      console.log("fuck")
-      const updateTsessionResponse = await fetch(
-        `${window.API2_BASE_URL}/training/${tsession[0]._id}/users/${formData.participant}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          }
-        }
-      );
-      const tdata = await updateTsessionResponse.json();
-      console.log("yees")
-      // console.log(tdata)
-    }
 
     // Update the project object with the modified participants array
-    const updatedProject = { ...project, participants: project.participants };
-    //console.log(updatedProject);
+    const serializedAnnotatedAbstracts = project.annotated_abstracts.map(userAnnotations => ({
+      userId: userAnnotations.userId,
+      annotations: userAnnotations.annotations.map(annotation => ({
+        abstractId: annotation.abstractId,
+        responseId: annotation.responseId
+      }))
+    }));
+
+    const updatedProject = {
+      ...project,
+      participants: project.participants,
+      annotated_abstracts: serializedAnnotatedAbstracts
+    };
+    // console.log(updatedProject)
     const updateResponse = await fetch(
       `${window.API_BASE_URL}/projects/${id}`,
       {
@@ -86,7 +78,28 @@ export const updateParticipants = async (id, formData) => {
       }
     );
     const data = await updateResponse.json();
-    console.log(data);
+    // console.log(data);
+
+     // Update training sessions participants
+     const tsessionResponse = await fetch(
+      `${window.API2_BASE_URL}/training/project/${id}`
+    );
+    const tsession = await tsessionResponse.json();
+    if (tsession.length !== 0) {
+      console.log("yes session")
+      const updateTsessionResponse = await fetch(
+        `${window.API2_BASE_URL}/training/${tsession[0]._id}/users/${formData.participant}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          }
+        }
+      );
+      const tdata = await updateTsessionResponse.json();
+      
+      // console.log(tdata)
+    }
     return "added user"
     }
     
@@ -94,6 +107,49 @@ export const updateParticipants = async (id, formData) => {
     console.error("There was a problem with the fetch operation:", error);
   }
 };
+
+export const getAnnotations = async(pid, uid) => {
+  try{
+    // Fetch the current project object
+    const response = await fetch(`${window.API_BASE_URL}/projects/${pid}`);
+    const project = await response.json();
+
+    //console.log(project["annotated_abstracts"])
+    const annotationsUser = project["annotated_abstracts"].find(row => row.userId === uid);
+    console.log(annotationsUser.annotations)
+    
+    return annotationsUser.annotations
+
+  } catch (error){
+    console.error("There was a problem with the fetch operation:", error);
+  }
+}
+
+export const getAbsInfoAnnotations = async(absid) => {
+  try{
+    // Fetch the current project object
+    const response = await fetch(`${window.API2_BASE_URL}/test/abstracts/${absid}`);
+    const abstract = await response.json();
+    
+    return abstract
+
+  } catch (error){
+    console.error("There was a problem with the fetch operation:", error);
+  }
+}
+
+export const getRespInfoAnnotations = async(respid) => {
+  try{
+    // // Fetch the current project object
+    // const response = await fetch(`${window.API2_BASE_URL}/test/abstracts/${respid}`);
+    // const abstract = await response.json();
+    
+    // return abstract
+
+  } catch (error){
+    console.error("There was a problem with the fetch operation:", error);
+  }
+}
 
 export const deleteParticipant = async (id, participant) => {
   try {

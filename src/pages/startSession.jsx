@@ -64,7 +64,7 @@ export const TrainingConfig = () => {
         </Box>
         </form>
         <div><Box mt={3}></Box></div>
-        <Alert severity="info">Currently, it is only available a data set of 5000 records </Alert>
+        <Alert severity="info">Currently, the data set are manually changed so do not add a training session without admin approval </Alert>
         </div>
   
     

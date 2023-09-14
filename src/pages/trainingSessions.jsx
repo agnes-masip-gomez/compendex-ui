@@ -22,7 +22,7 @@ import { PromiseRenderer } from "../components/Promise/PromiseRenderer";
 import { UserContext } from "../components/Auth/UserContext";
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import { fetchUserData} from '../services/user_service';
-import { fetchPrecisionProject, fetchPrecisionsLabelProject} from '../services/project_service'
+import { fetchPrecisionProject, fetchPrecisionsLabelProject, fetchUsersOfAProject} from '../services/project_service'
 
 
 export const TrainingHistory = () => {
@@ -58,8 +58,11 @@ export const TrainingHistory = () => {
       getTrainingSessionsByProject(projectId).then((data) =>
       
       setTrainingSessions(data));
-      console.log(tsessions)
-      fetchPrecisionProject(projectId).then((pdata) => setPrecision(pdata))
+      fetchUsersOfAProject(projectId).then((data) => setUsersProject(data))
+      
+
+
+      // fetchPrecisionProject(projectId).then((pdata) => setPrecision(pdata))
       fetchPrecisionsLabelProject(projectId).then((labelData) => setPrecisionAllLabels(labelData))
     
   };
@@ -197,11 +200,20 @@ export const TrainingHistory = () => {
             <Alert severity="info">When the button is "Loading", there are background processes being done in the background that can take some minutes.
               Click the button reload after a while until the button shows "Start Training". </Alert>
           </Grid>
-
+          <hr className="divider"></hr>
+          <button className="trainingButton">
+            <Link
+                  to={`/trainingHistory/${projectId}`}
+                  className="Link"
+                  style={{ textDecoration: "none" }}
+                >
+                  <p className="navbar-signout-text"> Annotation History</p>
+              </Link>
+          </button>
           <div className="titleRow">
             <p className="small-title">Model Insights for this project</p>
           </div>
-            <p>Model precision (last 30 responses): {precision}</p>
+            <p>Model precision: {precision}</p>
             <Table size="small">
             <TableHead>
               <TableRow>
@@ -242,7 +254,7 @@ export const TrainingHistory = () => {
             </TableHead>
             <TableBody>
               {tsessions.map((row) => {
-                if (!row || !row.users || row.users.length === 0) {
+                if (!row || !row.users ) {
                   return null;
                 }
 
@@ -265,7 +277,7 @@ export const TrainingHistory = () => {
                   return (
                     <TableRow key={`${row._id}-${user}-${index}`}>
                       <TableCell>{row.domain}</TableCell>
-                      <TableCell>{user}</TableCell>
+                      <TableCell>{userProj[index]}</TableCell>
                       <TableCell>{positiveResponse ? positiveResponse.resp + negativeResponse.resp + unkResponse.resp: "-"}</TableCell>
                       <TableCell>{positiveResponse ? positiveResponse.resp : "-"}</TableCell>
                       <TableCell>{negativeResponse ? negativeResponse.resp : "-"}</TableCell>
