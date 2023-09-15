@@ -175,10 +175,10 @@ export const MainPage = () => {
         console.log(data)
         if (data.label && data.abstract) {
         //   console.log("hey")
-        //   const question = `Asses if the label "${data.label}" is directly discussed in the text "${data.abstract}" Ït has the following keywords: "${data.CCVCMH}"`;
-        //   askChatGPT(question)
-        //     .then((response) => setChatbotResponse(response))
-        //     .catch((error) => console.error("Error asking ChatGPT:", error));
+          const question = `Asses if the label "${data.label}" is directly discussed in the text "${data.abstract}" Ït has the following keywords: "${data.CCVCMH}"`;
+          askChatGPT(question)
+            .then((response) => setChatbotResponse(response))
+            .catch((error) => console.error("Error asking ChatGPT:", error));
         }
       }
 
